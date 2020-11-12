@@ -1,0 +1,4 @@
+﻿  main.cpp
+C:\Users\adria\Documents\Physics for Video Games\Github Repo\PHYS-3300--AdrianCampbell\Assignments\E1.1\E1.1\main.cpp(20,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\adria\Documents\Physics for Video Games\Github Repo\PHYS-3300--AdrianCampbell\Assignments\E1.1\E1.1\main.cpp(128,23): warning C4018: '<': signed/unsigned mismatch
+  E1.1.vcxproj -> C:\Users\adria\Documents\Physics for Video Games\Github Repo\PHYS-3300--AdrianCampbell\Assignments\E1.1\Debug\E1.1.exe
