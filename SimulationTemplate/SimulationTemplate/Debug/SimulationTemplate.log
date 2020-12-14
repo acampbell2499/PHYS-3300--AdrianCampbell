@@ -1,8 +1,14 @@
 ﻿  main.cpp
-C:\Users\ricky\Documents\College\GAME PHYSICS\SimulationTemplate\SimulationTemplate\main.cpp(53,24): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
-C:\Users\ricky\Documents\College\GAME PHYSICS\SimulationTemplate\SimulationTemplate\main.cpp(58,25): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
-  GameObject.cpp
-  Simulation.cpp
-  TextureManager.cpp
-  Generating Code...
-  SimulationTemplate.vcxproj -> C:\Users\ricky\Documents\College\GAME PHYSICS\SimulationTemplate\Debug\SimulationTemplate.exe
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(74,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(74,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(96,29): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(101,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(101,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(181,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(181,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(208,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(208,32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(246,24): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(250,25): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
+C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\SimulationTemplate\main.cpp(253,30): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+  SimulationTemplate.vcxproj -> C:\Users\adria\source\repos\Physics for Video Games\Examples\SimulationTemplate\Debug\SimulationTemplate.exe
