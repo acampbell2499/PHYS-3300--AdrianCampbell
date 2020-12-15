@@ -1,4 +1,3 @@
-
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
@@ -20,3 +19,4 @@ private:
 };
 
 #endif /* GAMEOBJECT_H */
+

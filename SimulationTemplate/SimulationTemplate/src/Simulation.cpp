@@ -1,10 +1,9 @@
-
 #include "Simulation.h"
 #include "TextureManager.h"
 #include "GameObject.h"
 
-GameObject* background;
-GameObject* robot;
+GameObject* tilemap;
+GameObject* character;
 SDL_Event Simulation::event;
 
 Simulation::Simulation()
@@ -24,7 +23,7 @@ void Simulation::init(const char* title, int xpos, int ypos, int width, int heig
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		std::cout << "SDL Initialized!" << std::endl;
-		window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+		window = SDL_CreateWindow(title, xpos, ypos, width, height, flags | SDL_WINDOW_RESIZABLE);
 
 		if (window)
 		{
@@ -45,104 +44,99 @@ void Simulation::init(const char* title, int xpos, int ypos, int width, int heig
 		isRunning = false;
 	}
 
-	background = new GameObject("assets/blue.png", renderer);
-	robot = new GameObject("assets/chibi-robot.png", renderer);
-}
+	tilemap = new GameObject("assets/finalTilemap.png", renderer);
+	character = new GameObject("assets/cube.png", renderer);
 
-void Simulation::handleEvents()
-{
-	/*
-		Debemos agregar cosas como cambios de velocidad o aplicación de fuerzas en esta parte.
-	*/
-	SDL_PollEvent(&event);
-
-	if (event.type == SDL_KEYDOWN) {
-		switch (event.key.keysym.sym) {
-		case SDLK_w:
-			keyDown[0] = true;
-			break;
-
-		case SDLK_a:
-			keyDown[1] = true;
-			break;
-
-		case SDLK_s:
-			keyDown[2] = true;
-			break;
-
-		case SDLK_d:
-			keyDown[3] = true;
-			break;
-		}
-	}
-	else if (event.type == SDL_KEYUP) {
-		switch (event.key.keysym.sym) {
-		case SDLK_w:
-			keyDown[0] = false;
-			break;
-
-		case SDLK_a:
-			keyDown[1] = false;
-			break;
-
-		case SDLK_s:
-			keyDown[2] = false;
-			break;
-
-		case SDLK_d:
-			keyDown[3] = false;
-			break;
-		}
-	}
-
-	keyCounter = 0;
-
-	while (keyCounter <= 3) {
-		if (keyDown[keyCounter] && !keyAppliedDown[keyCounter]) {
-			keyAppliedDown[keyCounter] = true;
-			keyAppliedUp[keyCounter] = false;
-		}
-		else if (!keyDown[keyCounter] && !keyAppliedUp[keyCounter]) {
-			keyAppliedUp[keyCounter] = true;
-			keyAppliedDown[keyCounter] = false;
-		}
-		keyCounter++;
-	}
-
-	switch (event.type) {
-	case SDL_QUIT:
-		isRunning = false;
-		break;
-
-	default:
-		break;
+	for (int i = 0; i < 322; i++) {
+		KEYS_DOWN[i] = false;
+		KEYS_UP[i] = false;
+		APPLIED[i] = false;
 	}
 }
 
-void Simulation::update()
+void Simulation::handleEvents(b2Body* characterBody, bool onAir)
 {
-	/*
-		Los dos primeros argumentos son la posición (x,y) del objeto. En el template está fijo como 400 y 300, pero
-		cuando se trabaje con el engine, se debe usar las posiciones calculadas para el body del robot.
-		Los dos últimos argumentos son las dimensiones del destination rectangle. El robot se dibujará con dimensiones
-		64px x 64px. Debes cambiar esto a tu gusto.
-	*/
-	robot->update(400, 300, 64, 64);
+
+	if (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_QUIT:
+			isRunning = false;
+			break;
+
+		case SDL_KEYDOWN:
+			KEYS_DOWN[event.key.keysym.sym] = true;
+			KEYS_UP[event.key.keysym.sym] = false;
+			break;
+
+		case SDL_KEYUP:
+			KEYS_DOWN[event.key.keysym.sym] = false;
+			KEYS_UP[event.key.keysym.sym] = true;
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	if (!onAir) {
+		if (KEYS_DOWN[SDLK_d] && !APPLIED[SDLK_d]) {
+			characterBody->SetLinearVelocity(characterBody->GetLinearVelocity() + b2Vec2(movingSpeed, 0.0f));
+			APPLIED[SDLK_d] = true;
+		}
+		else if (KEYS_UP[SDLK_d]) {
+			characterBody->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+			KEYS_UP[SDLK_d] = false;
+			APPLIED[SDLK_d] = false;
+		}
+
+		if (KEYS_DOWN[SDLK_a] && !APPLIED[SDLK_a])
+		{
+			characterBody->SetLinearVelocity(characterBody->GetLinearVelocity() - b2Vec2(movingSpeed, 0.0f));
+			APPLIED[SDLK_a] = true;
+		}
+		else if (KEYS_UP[SDLK_a])
+		{
+			characterBody->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+			KEYS_UP[SDLK_a] = false;
+			APPLIED[SDLK_a] = false;
+		}
+
+		if (KEYS_DOWN[SDLK_SPACE] && !APPLIED[SDLK_SPACE])
+		{
+			if (characterBody->GetLinearVelocity().x == 0)
+			{
+				characterBody->SetLinearVelocity(characterBody->GetLinearVelocity() + b2Vec2(0.0f, -200.0f / ppm));
+			}
+			else if (characterBody->GetLinearVelocity().x > 0)
+			{
+				characterBody->SetLinearVelocity(b2Vec2(50.0f / ppm, -200.0f / ppm));
+			}
+			else if (characterBody->GetLinearVelocity().x < 0)
+			{
+				characterBody->SetLinearVelocity(b2Vec2(-50.0f / ppm, -200.0f / ppm));
+			}
+		}
+	}
+
+
+
+
+}
+
+void Simulation::update(float x, float y, float rot, float dt)
+{
+	SDL_GetWindowSize(window, &wWindow, &hWindow);
+	xScale = wWindow / 640.0f;
+	yScale = hWindow / 360.0f;
+	character->update((x - 10.0f) * xScale, (y - 27.0f) * yScale, 20 * xScale, 54 * yScale);
 }
 
 void Simulation::render()
 {
 	SDL_RenderClear(renderer);
-	/*
-		Es importante hacer el render de los fondos en orden. Si son assets que ocupan toda la pantalla, se debe
-		pasar el argumento true. De otra forma se puede dejar vacío.
-	*/
-	background->render(true);
-	robot->render();
-
-	/*
-		Recordamos limpiar la ventana para que no suceda el efecto "victoria en solitario".
-	*/
+	tilemap->render(true);
+	character->render();
 	SDL_RenderPresent(renderer);
 }
 
